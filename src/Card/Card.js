@@ -10,7 +10,7 @@ export default class Card extends React.Component {
             data : '',
             day : '',
         };
-        this.myRef = React.createRef();
+
     };
 
     componentDidMount() {
@@ -28,8 +28,25 @@ export default class Card extends React.Component {
 
         this.setState({ data: dayMonth + ' ' + this.state.month[month] });
 
+    };
 
-    }
+    cityName = () => {
+
+        let cityName = '';
+        if(this.props.id){
+            JSON.parse(localStorage.getItem('cities')).map((elem,index) => {
+                if(elem.id === this.props.id){
+                    cityName = elem.name;
+                }
+                return "";
+            });
+        }else{
+            cityName = JSON.parse(localStorage.getItem('inpCity')).name;
+        }
+
+        return cityName;
+    };
+
 
     render() {
 
@@ -42,15 +59,17 @@ export default class Card extends React.Component {
         let href = '';
 
         if(this.props.group){
-            elemHtml = <p className="weekday">{weatherArr.name}</p>;
-            href = '/forecas/?sity='+this.props.day.name;
+            elemHtml = <div>
+                            <p className="package-name">{this.cityName()}</p>
+                            <button type="button" className="close" title={'Удалить'} onClick={() => this.props.remove(this.props.day.id)} />
+                        </div>;
+            href = `/forecas/?city=${this.cityName()}&id=${this.props.day.id}`;
             href = <a href={href}>Прогноз на 10 дней</a>
         }else{
             elemHtml =
                 <div>
                     <p className="weekday">{this.state.day}</p>
                     <p className="data">{this.state.data}</p>
-                    <p className="package-name">{this.props.name}</p>
                 </div>
             ;
         }

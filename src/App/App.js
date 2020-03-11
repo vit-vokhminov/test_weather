@@ -6,33 +6,36 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Header from '../Header/Header';
 import Weather from '../Weather/Weather';
 import Forecas from '../Forecas/Forecas';
+import One from '../One/One';
 
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sity : [
+            showBTfavourites : false,
+            city : [
                 {
-                    name : 'Novosibirsk',
+                    name : 'Новосибирск',
                     id : 1496747
                 }
             ],
         };
-        this.onAddItem = this.onAddItem.bind(this);
     };
 
-    onAddItem(value){
-        this.setState({ sity: [ ...this.state.sity, value  ] });
-    }
+    cityId() {
 
-    sityId() {
-        let nameId = [];
-        for( let elem of this.state.sity ){
-            nameId.push(elem.id);
+        let cityArr = JSON.parse(localStorage.getItem('cities'));
+
+        if(!cityArr){
+            cityArr = this.state.city.map(elem => elem);
+            localStorage.setItem('cities',JSON.stringify(cityArr));
         }
-        return nameId = nameId.join();
-    }
+
+        return cityArr.map(elem => elem.id);
+
+    };
+
 
     render() {
         let arrMain = '';
@@ -45,13 +48,13 @@ export default class App extends React.Component {
             <div className="container">
 
                 {arrMain}
-                <Header name={this.state.sity} onAddItem={this.onAddItem} />
+                <Header name={this.state.city} showBTfavourites={this.state.showBTfavourites}/>
 
                 <Router>
                     <Switch>
-                        <Route exact path="/" component={() => <Weather sity={this.sityId()}/>} />
+                        <Route exact path="/" component={() => <Weather city={this.cityId()}/>} />
                         <Route exact path="/forecas" component={() => <Forecas/>} />
-
+                        <Route exact path="/oneday" component={() => <One/>} />
                     </Switch>
                 </Router>
 

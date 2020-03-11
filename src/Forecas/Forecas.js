@@ -9,24 +9,23 @@ export default class Forecas extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            weatherArr : [],
-            sity : ''
+            weatherArr : '',
+            city : ''
         };
     };
 
-
     componentDidMount() {
-        let sity = parsed.sity;
+        let city = parsed.city;
 
-        fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${sity}&appid=9b46a32e02362554ac486e7cbbc5ae45&lang=ru`)
+        fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=9b46a32e02362554ac486e7cbbc5ae45&lang=ru`)
             .then(resp => resp.json())
             .then(data => {
                 this.setState({
                     weatherArr: data.list,
-                    sity: sity
+                    city: city
                 });
             });
-    }
+    };
 
     cardsElem = () => {
         let i = 0;
@@ -38,13 +37,16 @@ export default class Forecas extends React.Component {
                 return false;
             }
         })
-    }
+    };
 
     render() {
-
+        let weatherArr = this.state.weatherArr;
+        if (!weatherArr) {
+            return <span>Загрузка</span>;
+        }
         return (
             <div>
-                <h4>Погода в {this.state.sity}</h4>
+                <h4>Погода в {parsed.city}</h4>
                 <div className="pricing-table row">
                     {this.cardsElem()}
                 </div>
