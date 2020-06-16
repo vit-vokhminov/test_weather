@@ -6,7 +6,7 @@ import {Redirect} from "react-router";
 
 const NewDayContainer = (props) => {
 
-    if(props.newCity === false) return <Redirect to={'/'} />;
+    if(props.newCity.length === 0) return <Redirect to={'/'} />;
 
     let iconUrl = "http://openweathermap.org/img/w/" + props.newCity.icon + ".png";
     let href = `/forecas/${props.newCity.id}/${props.newCity.name}`;
@@ -29,7 +29,7 @@ const NewDayContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     newCity: state.appReducer.newCity,
-    statusAddBT: state.appReducer.statusAddBT,
+    FavoritesBt: state.appReducer.FavoritesBt,
 });
 
 

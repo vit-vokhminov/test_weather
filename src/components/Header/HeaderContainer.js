@@ -1,19 +1,23 @@
 import React from 'react';
 import {connect} from "react-redux";
 import Header from './Header';
-import {newCity, statusBT, addCity} from "../../redux/app-reducer";
+import {newCity, statusFavoritesBt, addCity} from "../../redux/app-reducer";
 import { withRouter } from 'react-router-dom'
 import {openAPI} from "../../api/api";
 
+/*type PropsType = {
+    addCity: () => void,
+    city: Array<CityType>
+    history: any
+    location: any
+    match: any
+    newCity: () => void,
+    newCityName: Array<NewCityType>
+    favoritesBt: boolean
+    statusFavoritesBt: () => void
+}*/
 
 class HeaderContainer extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            weatherArr : '',
-            city : ''
-        };
-    };
 
     submitcity = (e) => {
         e.preventDefault();
@@ -29,9 +33,9 @@ class HeaderContainer extends React.Component {
                         disclaimer : data.weather[0]['description'],
                         icon : data.weather[0].icon
                     });
-                    let duplicate = this.props.city.find(city => city.name.toLowerCase() === val.toLowerCase());
+                    let duplicate = this.props.cities.find(city => city.name.toLowerCase() === val.toLowerCase());
                     if(duplicate === undefined){
-                        this.props.statusBT(true)
+                        this.props.statusFavoritesBt(true)
                     }
                     this.props.history.push(`/newday/${data.name}`);
                 }
@@ -44,22 +48,16 @@ class HeaderContainer extends React.Component {
             id : this.props.newCityName.id,
         });
         document.querySelector('#city').value = '';
-        this.props.statusBT(false);
+        this.props.statusFavoritesBt(false);
+        this.props.history.push('/');
     };
-
-    cityChange = (e) => {
-        let val = e.target.value.toLowerCase();
-        let cityName = this.props.newCityName.name;
-        (cityName && val === cityName.toLowerCase()) ? this.props.statusBT(true) : this.props.statusBT(false);
-    }
 
     render() {
         return (
             <div>
                 <Header
                     submitcity={this.submitcity}
-                    cityChange={this.cityChange}
-                    statusAddBT={this.props.statusAddBT}
+                    favoritesBt={this.props.favoritesBt}
                     addFavourites={this.addFavourites}
                 />
             </div>
@@ -70,10 +68,10 @@ class HeaderContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    city: state.appReducer.city,
+    cities: state.appReducer.cities,
     newCityName: state.appReducer.newCity,
-    statusAddBT: state.appReducer.statusAddBT
+    favoritesBt: state.appReducer.favoritesBt
 });
 
 let WithUrlRouter = withRouter(HeaderContainer);
-export default connect(mapStateToProps, {newCity,statusBT,addCity})(WithUrlRouter);
+export default connect(mapStateToProps, {newCity,statusFavoritesBt,addCity})(WithUrlRouter);
