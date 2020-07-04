@@ -8,26 +8,18 @@ const instance = axios.create({
 
 export const openAPI = {
 
-    getWeather(cityId: number) {
-        return instance.get(`group?id=${cityId + appID_langRU}`)
-            .then(response => {
-                return response.data.list;
-            });
+    async getWeather(cityId: number) {
+        let response = await instance.get(`group?id=${cityId + appID_langRU}`);
+        return response.data.list;
     },
-    getForecas(cityId: number) {
+    async getForecas(cityId: number) {
         let colDayForecas = 10;
-        return instance.get(`forecast?id=${cityId}&cnt=${colDayForecas + appID_langRU}`)
-            .then(response => {
-                return response.data.list;
-            });
+        let response = await instance.get(`forecast?id=${cityId}&cnt=${colDayForecas + appID_langRU}`);
+        return response.data.list;
     },
-    getNewCity(cityName: string) {
-        return instance.get(`weather?q=${cityName + appID_langRU}`)
-            .then(response => {
-                return response.data;
-            });
+    async getNewCity(cityName: string) {
+        let response = await instance.get(`weather?q=${cityName + appID_langRU}`)
+        return response.data;
     },
 }
-
-
 

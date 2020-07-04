@@ -5,6 +5,7 @@ import s from './Header.module.css';
 type PropsType = {
     addFavourites: () => void,
     favoritesBt: boolean,
+    refCity: string,
     submitcity: () => void,
 }
 
@@ -16,7 +17,7 @@ const Header: React.FC<PropsType> = (props) => {
         <form action="" onSubmit={props.submitcity}>
             <div className="form-control-group">
                 <div className="form-control grow-2x">
-                    <input type="text" id="city" name="city" placeholder={'Поиск города'} />
+                    <input type="text" id="city" name="city" ref={props.refCity} placeholder={'Поиск города'} />
                 </div>
                 <div className="form-control grow-2x">
                     <button type="submit" className="button-primary">Найти</button>

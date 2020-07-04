@@ -21,9 +21,9 @@ class HeaderContainer extends React.Component {
 
     submitcity = (e) => {
         e.preventDefault();
-        let val = e.target.querySelector('#city').value;
+        let cityValue = this.titleCity.value;
 
-        openAPI.getNewCity(val)
+        openAPI.getNewCity(cityValue)
             .then(data => {
                 if(data.cod !== '404' && data.cod !== '400'){
                     this.props.newCity({
@@ -33,7 +33,7 @@ class HeaderContainer extends React.Component {
                         disclaimer : data.weather[0]['description'],
                         icon : data.weather[0].icon
                     });
-                    let duplicate = this.props.cities.find(city => city.name.toLowerCase() === val.toLowerCase());
+                    let duplicate = this.props.cities.find(city => city.name.toLowerCase() === cityValue.toLowerCase());
                     if(duplicate === undefined){
                         this.props.statusFavoritesBt(true)
                     }
@@ -59,6 +59,7 @@ class HeaderContainer extends React.Component {
                     submitcity={this.submitcity}
                     favoritesBt={this.props.favoritesBt}
                     addFavourites={this.addFavourites}
+                    refCity={input => this.titleCity = input}
                 />
             </div>
 
