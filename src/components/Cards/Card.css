@@ -1,14 +1,14 @@
 .package.featured {
     position: relative;
 }
-button.close {
+button.close{
     width: 17px;
     height: 17px;
     border: none;
     padding: 0;
     margin: 0;
     position: absolute;
-    top: 10px;
+    top:10px;
     right: 10px;
     background: url('close.png') no-repeat;
 }

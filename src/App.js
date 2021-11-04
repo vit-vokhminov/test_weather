@@ -1,20 +1,35 @@
 import React from 'react';
-import './assets/mustard-ui.min.css';
-import { Route } from 'react-router-dom';
+import './extensions/mustard-ui.min.css';
+import {Route} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
-import { Main, Forecas, NewDay } from './pages';
-import { Header } from './components';
+import GoMainLink from './components/GoMainLink/GoMainLink';
+import HeaderContainer from './components/Header/HeaderContainer';
+import CitiesContainer from './components/Cards/Cities/CitiesContainer';
+import ForecasContainer from './components/Cards/Forecas/ForecasContainer';
+import NewDayContainer from './components/Cards/NewDay/NewDayContainer';
 
-const App = () => {
-    return (
-        <div className='container'>
-            <Header />
 
-            <Route exact path='/' component={Main} />
-            <Route path='/forecas/:id/:city' component={Forecas} />
-            <Route path='/newday' component={NewDay} />
-        </div>
-    );
-};
 
-export default App;
+const App = (props) => {
+
+        return (
+
+            <div className="container">
+                {props.location.pathname !== "/" ? <GoMainLink /> : null}
+                <HeaderContainer/>
+
+                <Route exact path="/" component={() => <CitiesContainer />} />
+                <Route path="/forecas/:id/:city" component={() => <ForecasContainer/>} />
+                <Route path="/newday" component={() => <NewDayContainer/>} />
+
+            </div>
+
+        );
+
+}
+
+
+let WithUrlRouter = withRouter(App);
+export default connect()(WithUrlRouter)
